@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  modern-motion-animation:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: modern-motion-animation-server
+    shm_size: '16gb'
+    ipc: host
+    ports:
+      - "8011:8011"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu, utility, compute]
+    environment:
+      - MODERN_MOTION_PORT=8011
+      - MODERN_MOTION_RELOAD=true
+      - CUDA_MODULE_LOADING=LAZY
+      - PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True,garbage_collection_threshold:0.7
+    security_opt:
+      - seccomp:unconfined
+    volumes:
+      - .:/app/server
+      - ./engines:/app/engines
+      - ../../storage/motion:/app/storage/motion
+      - ../../storage/models:/app/storage/models
+      - motion_hf_cache:/app/hf_cache
+    restart: unless-stopped
+
+volumes:
+  motion_hf_cache:

@@ -1,0 +1,27 @@
+# Modern Motion Animation Server Dependencies
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+pydantic>=2.8.0
+python-multipart>=0.0.9
+aiofiles>=24.1.0
+requests>=2.31.0
+psutil>=5.9.8
+
+# Core Deep Learning & Video Generation (Torch preinstalled in base image)
+diffusers>=0.30.0
+accelerate>=0.33.0
+transformers>=4.44.0
+einops>=0.8.0
+safetensors>=0.4.4
+numpy>=1.26.0,<2.0.0
+scipy>=1.13.0
+
+# Video & Vision Processing
+opencv-python-headless>=4.10.0
+imageio>=2.34.0
+imageio-ffmpeg>=0.5.1
+Pillow>=10.4.0
+
+# Audio Processing (for EchoMimicV3 / audio-driven pose)
+librosa>=0.10.2
+soundfile>=0.12.1
