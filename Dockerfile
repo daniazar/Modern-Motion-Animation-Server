@@ -7,7 +7,7 @@ ENV PYTHONUNBUFFERED=1 \
     HF_HOME=/app/hf_cache \
     MODELS_DIR=/app/storage/models \
     MODERN_MOTION_PORT=8011 \
-    TORCH_CUDA_ARCH_LIST="8.0;8.6;8.9;9.0;12.0;PTX" \
+    TORCH_CUDA_ARCH_LIST="8.0;8.6;8.9;9.0;10.0;12.0;PTX" \
     CUDA_MODULE_LOADING=LAZY \
     PYTORCH_CUDA_ALLOC_CONF="expandable_segments:True,garbage_collection_threshold:0.7"
 
@@ -30,7 +30,11 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     libxext6 \
     libxrender1
 
-# 2. Python dependencies (no thread-spawning progress bar)
+# 2. Python dependencies & Blackwell sm_120 PyTorch upgrade
+RUN pip install --no-cache-dir --progress-bar off --upgrade \
+    torch torchvision torchaudio \
+    --index-url https://download.pytorch.org/whl/cu130
+
 COPY requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir --progress-bar off -r /app/requirements.txt
 

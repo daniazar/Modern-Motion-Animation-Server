@@ -2,6 +2,7 @@ version: '3.8'
 
 services:
   modern-motion-animation:
+    image: newsstudio-modern-motion:latest
     build:
       context: .
       dockerfile: Dockerfile
@@ -26,9 +27,12 @@ services:
       - seccomp:unconfined
     volumes:
       - .:/app/server
+      - ./engine_loader.py:/app/engine_loader.py
+      - ./server.py:/app/server.py
       - ./engines:/app/engines
       - ../../storage/motion:/app/storage/motion
       - ../../storage/models:/app/storage/models
+      - ../../public:/app/public:ro
       - motion_hf_cache:/app/hf_cache
     restart: unless-stopped
 
